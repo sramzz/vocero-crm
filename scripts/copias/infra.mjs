@@ -208,6 +208,10 @@ function aws(almacen, accion, args, signal) {
   { signal, capturar: true, limiteMs: 600_000, env: { ...process.env, AWS_MAX_ATTEMPTS: "2", AWS_PAGER: "" } });
 }
 
+function cifradoGestionadoPorR2(almacen) {
+  return /^[a-f0-9]{32}(?:\.(?:eu|fedramp|us))?\.r2\.cloudflarestorage\.com$/.test(new URL(almacen.endpoint).hostname);
+}
+
 export async function objetos(s, prefijo, señal) {
   const datos = await aws(s, "list-objects-v2", ["--prefix", prefijo, "--output", "json"], señal);
   return z.array(z.object({ Key: z.string(), Size: z.number().int().nonnegative(), ETag: z.string().optional() }))
@@ -224,7 +228,8 @@ export function descargar(s, key, ruta, señal, etag) {
 
 export function subir(s, key, ruta, señal, { tipo, cifrado = true } = {}) {
   return aws(s, "put-object", ["--key", key, "--body", ruta, "--if-none-match", "*",
-    ...(tipo ? ["--content-type", tipo] : []), ...(cifrado ? ["--server-side-encryption", "AES256"] : [])], señal);
+    ...(tipo ? ["--content-type", tipo] : []),
+    ...(cifrado && !cifradoGestionadoPorR2(s) ? ["--server-side-encryption", "AES256"] : [])], señal);
 }
 
 export function quitar(s, key, señal) {
@@ -247,6 +252,7 @@ export async function comprobarDespliegue(config, uuid) {
 
 export async function subirParte(s, key, ruta, señal) {
   await comando("aws", ["--no-cli-pager", "--no-cli-auto-prompt", "--profile", s.perfil, "--region", s.region,
-    "--endpoint-url", s.endpoint, "s3", "cp", ruta, `s3://${s.bucket}/${key}`, "--sse", "AES256", "--only-show-errors"],
+    "--endpoint-url", s.endpoint, "s3", "cp", ruta, `s3://${s.bucket}/${key}`,
+    ...(cifradoGestionadoPorR2(s) ? [] : ["--sse", "AES256"]), "--only-show-errors"],
   { signal: señal, limiteMs: 1_800_000 });
 }
