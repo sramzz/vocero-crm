@@ -7,7 +7,7 @@
 - [x] **T005 · Desplegar y ejecutar en staging.** Tarea `Vocero PostgreSQL → R2`, credenciales separadas y frecuencia `0 */8 * * *` en UTC. Primera ejecución manual verificada en R2.
 - [x] **T006 · Restaurar en PostgreSQL desechable.** Dump real restaurado en PostgreSQL 16.16 con 45 tablas de Vocero y Nea. Staging estaba vacío. La prueba posterior pobló solo una instancia aislada y comprobó la conversación y los bytes del adjunto por su enlace original.
 - [x] **T007 · Ensayar el traslado.** La copia de medios protegió un archivo sintético. Dos ejecuciones verificaron la misma clave en R2. Tras recuperar y comparar los bytes, la limpieza eliminó un archivo del directorio de ensayo.
-- [ ] **T008 · Activar retención automática de PostgreSQL.** Pendiente de la autorización para expirar objetos tras 30 días, solo en el prefijo `postgres/` de staging.
+- [x] **T008 · Activar retención automática de PostgreSQL.** Regla `vocero-postgres-30d` autorizada y verificada en R2. Expira objetos tras 30 días, solo en el prefijo `postgres/` de `vocero-staging-backups`.
 
 ## Evidencia de staging
 
