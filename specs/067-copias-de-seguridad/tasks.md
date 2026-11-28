@@ -13,5 +13,6 @@
 
 - SHA desplegado y verificado `528845b`. La aplicación mantuvo la salud y el acceso a medios durante la copia.
 - Copia PostgreSQL `2026-11-28T19-00-08-046Z-16d60694-0550-436b-ae9c-a0daeb519311`. Coolify registró cinco segundos; el SHA-256 del dump remoto coincidió con el manifiesto.
+- Una ejecución de ensayo con una credencial S3 inválida terminó en error en Coolify. R2 conservó el dump y el manifiesto anteriores, sin publicar otro conjunto.
 - Copia de medios `2026-11-28T19-03-32-625Z-a0532cd7-fda4-47e0-b6ef-61e7d6f5f764`. El archivo recuperado coincidió con el objeto trasladado en R2. La prueba aislada también comprobó que un objeto alterado bloquea la limpieza.
 - [Guion del ensayo](../../tests/e2e/us-copias-coolify.md).
