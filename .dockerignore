@@ -1,6 +1,8 @@
 node_modules
 .next
 .git
+tmp/
+.dev-media/
 .env*
 !.env.example
 *.log

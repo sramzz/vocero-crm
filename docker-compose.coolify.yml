@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        SOURCE_COMMIT: ${SOURCE_COMMIT:-}
     restart: unless-stopped
     expose:
       - "3000"
@@ -27,6 +29,13 @@ services:
       BRAIN_DISPATCH_URL: http://nea:8000/vocero/dispatch
       CHANNELS: ${CHANNELS:-}
       AGENDA: ${AGENDA:-}
+      COPIAS_INSTANCIA_ID: ${COOLIFY_RESOURCE_UUID:-}
+      MEDIA_STORE: ${MEDIA_STORE:-disco}
+      MEDIA_BUCKET_ENDPOINT: ${MEDIA_BUCKET_ENDPOINT:-}
+      MEDIA_BUCKET_NAME: ${MEDIA_BUCKET_NAME:-}
+      MEDIA_BUCKET_REGION: ${MEDIA_BUCKET_REGION:-auto}
+      MEDIA_BUCKET_KEY_ID: ${MEDIA_BUCKET_KEY_ID:-}
+      MEDIA_BUCKET_SECRET: ${MEDIA_BUCKET_SECRET:-}
       ATRIBUCION: ${ATRIBUCION:-}
       AGENT_COALESCE_MS: ${AGENT_COALESCE_MS:-6000}
     volumes:

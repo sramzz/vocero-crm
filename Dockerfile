@@ -32,6 +32,8 @@ RUN pnpm exec esbuild scripts/seed/demo.ts --bundle --platform=node \
     --banner:js="import { createRequire } from 'module'; const require = createRequire(import.meta.url);"
 
 FROM node:22.23.4-alpine AS runner
+ARG SOURCE_COMMIT=""
+LABEL org.opencontainers.image.revision=$SOURCE_COMMIT
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

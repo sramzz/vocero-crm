@@ -1401,3 +1401,27 @@ export const conversationNote = pgTable(
     index("conversation_note_conv_idx").on(t.organizationId, t.conversationId, t.createdAt),
   ]
 );
+
+// 067 — La programación del negocio y el estado escrito por el operador.
+export const copiaProgramacion = pgTable("copia_programacion", {
+  organizationId: text("organization_id").notNull()
+    .references(() => organization.id, { onDelete: "cascade" }),
+  instanciaId: text("instancia_id").notNull(),
+  habilitada: boolean("habilitada").notNull().default(false),
+  frecuencia: text("frecuencia", { enum: ["8h", "12h", "diaria", "semanal"] }).notNull().default("8h"),
+  horaUtc: text("hora_utc").notNull().default("08:00"),
+  dia: integer("dia"),
+  desde: timestamp("desde").notNull().defaultNow(),
+}, (t) => [uniqueIndex("copia_programacion_org_instancia_idx").on(t.organizationId, t.instanciaId)]);
+
+export const copiaEstado = pgTable("copia_estado", {
+  organizationId: text("organization_id").notNull()
+    .references(() => organization.id, { onDelete: "cascade" }),
+  instanciaId: text("instancia_id").notNull(),
+  contacto: timestamp("contacto").notNull(),
+  turno: timestamp("turno"),
+  ultimaCaptura: timestamp("ultima_captura"),
+  ultimaVerificada: timestamp("ultima_verificada"),
+  resultado: text("resultado", { enum: ["en_curso", "completa", "fallida", "omitida"] }),
+  avisoDesde: timestamp("aviso_desde"),
+}, (t) => [uniqueIndex("copia_estado_org_instancia_idx").on(t.organizationId, t.instanciaId)]);
