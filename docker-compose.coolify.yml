@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: coolify
       args:
         SOURCE_COMMIT: ${SOURCE_COMMIT:-}
     restart: unless-stopped
@@ -29,7 +30,11 @@ services:
       BRAIN_DISPATCH_URL: http://nea:8000/vocero/dispatch
       CHANNELS: ${CHANNELS:-}
       AGENDA: ${AGENDA:-}
-      COPIAS_INSTANCIA_ID: ${COOLIFY_RESOURCE_UUID:-}
+      COPIAS_BUCKET_ENDPOINT: ${COPIAS_BUCKET_ENDPOINT:-}
+      COPIAS_BUCKET_NAME: ${COPIAS_BUCKET_NAME:-}
+      COPIAS_BUCKET_REGION: ${COPIAS_BUCKET_REGION:-auto}
+      COPIAS_BUCKET_KEY_ID: ${COPIAS_BUCKET_KEY_ID:-}
+      COPIAS_BUCKET_SECRET: ${COPIAS_BUCKET_SECRET:-}
       MEDIA_STORE: ${MEDIA_STORE:-disco}
       MEDIA_BUCKET_ENDPOINT: ${MEDIA_BUCKET_ENDPOINT:-}
       MEDIA_BUCKET_NAME: ${MEDIA_BUCKET_NAME:-}

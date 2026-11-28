@@ -77,3 +77,11 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=40s --retries=5 \
 ENTRYPOINT ["vocero-entrypoint.sh"]
 # Migrar al BOOT del contenedor nuevo y arrancar el server standalone
 CMD ["sh", "-c", "node migrate.mjs && node server.js"]
+
+# El Compose de Coolify ejecuta sus tareas en el contenedor de Vocero.
+FROM runner AS coolify
+ENV VOCERO_REVISION=$SOURCE_COMMIT
+RUN apk add --no-cache postgresql16-client aws-cli flock
+COPY --chown=vocero:vocero scripts/copias/ ./copias/
+
+FROM runner AS imagen

@@ -1,5 +1,3 @@
-import { getSessionOrNull } from "@/lib/auth/session";
-import { canConfigure } from "@/lib/auth/roles";
 import { SettingsNav } from "@/components/settings/settings-nav";
 import { agendaEnabled } from "@/server/agenda/flag";
 import { atribucionEnabled } from "@/server/attribution/flag";
@@ -10,10 +8,9 @@ import { isChannelEnabled } from "@/server/channels/enabled";
 // plataforma no haría nada.
 export const dynamic = "force-dynamic";
 
-export default async function SettingsLayout({
+export default function SettingsLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await getSessionOrNull();
   return (
     <div className="flex h-full flex-col">
       <header className="border-b px-4 py-3 sm:px-6 sm:py-4">
@@ -22,7 +19,6 @@ export default async function SettingsLayout({
       {/* En móvil las pestañas van arriba (en fila), no como columna lateral. */}
       <div className="flex min-h-0 flex-1 flex-col sm:flex-row">
         <SettingsNav
-          copias={canConfigure(session?.role)}
           agenda={agendaEnabled()}
           atribucion={atribucionEnabled()}
           instagram={isChannelEnabled("instagram")}
